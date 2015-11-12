@@ -128,20 +128,6 @@ function fillList(userName, id) {
             }
     }
 }
-            
-function showMatrix(){
-    var el = $();
-    el = el.add('<table>');
-    for(var i = 0; i < mainList.length; i++){
-        el = el.add('<tr>');
-        for(var j = 0; j < mainList.length;j++){
-            el = el.add('<td>' + matrix[i][j] + '&nbsp&nbsp' + '</td>');
-        }
-        el = el.add('</tr>');
-    }
-    el = el.add('</table>');
-    $("body").append(el);
-}
         
 function getFromText(){
     amountOfFollows = 0;
@@ -216,11 +202,77 @@ function fillFollowesThrough(userName, id){
     })).done(function(){
     });
 }
-            
+
 function out(){
     initMatrix();
     for(var i = 0; i < mainList.length;i++){
         goThrough(mainList[i]);
     }
     $("body").append("<h3> Done! <h3>");
+}
+
+function showMatrix(){
+    var el = $();
+    el = el.add('<table>');
+    for(var i = 0; i < mainList.length; i++){
+        el = el.add('<tr>');
+        for(var j = 0; j < mainList.length;j++){
+            el = el.add('<td>' + matrix[i][j] + '&nbsp&nbsp' + '</td>');
+        }
+        el = el.add('</tr>');
+    }
+    el = el.add('</table>');
+    $("body").append(el);
+}
+
+function alg() {
+    
+    var k=0;
+    while(k<mainList.length){
+        for(var i=0; i<mainList.length; i++){
+            for(var j=0; j<mainList.length; j++){
+                if((matrix[k][i]===1) && (matrix[j][k]===1)){
+                    if((i!==k) && (j!==k)) matrix[j][i]=1;        
+                }
+            }
+        }
+        k++;
+    }
+}
+
+//Проверка
+/*var matr = [[0, 1, 0, 0],[0, 0, 0, 1],[0, 0, 0, 0],[0, 0, 1, 0]];
+
+function alg2() {
+    var k=0;
+    while(k<4){
+        for(var i=0; i<4; i++){
+            for(var j=0; j<4; j++){
+                if((matr[k][i]===1) && (matr[j][k]===1)){
+                    if((i!==k) && (j!==k)) matr[j][i]=1;        
+                }
+            }
+        }
+        k++;
+    }
+}
+
+function showMatr(){
+    var el = $();
+    el = el.add('<table>');
+    for(var i = 0; i < 4; i++){
+        el = el.add('<tr>');
+        for(var j = 0; j < 4;j++){
+            el = el.add('<td>' + matr[i][j] + '&nbsp&nbsp' + '</td>');
+        }
+        el = el.add('</tr>');
+    }
+    el = el.add('</table>');
+    $("body").append(el);
+}*/
+
+function showAlg() {
+    alg();
+    $("body").append("<h3> Result: <h3>");
+    showMatrix();
 }
