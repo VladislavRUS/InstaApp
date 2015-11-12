@@ -1,9 +1,10 @@
 var followsList;
 var followedList;
+var mainList = new Array();
             
 var matrix;
 var count = 0;
-            
+        
 function initMatrix(){
     matrix = [followedList.length];
     for(var i = 0; i < followedList.length;i++){
@@ -100,8 +101,32 @@ function fillFollowes(userName, id){
                     alert("Error followes");
                 }
     })).done(function(){
-        
+       fillList(userName, id)
     });
+}
+
+function search (a, b) {
+    for (var i=0; i<b.length; i++){
+        if(a===b[i]) return true;
+    }
+    return false;
+}
+
+function fillList(userName, id) {
+    var i=0;
+    $("body").append('<h3>' + userName + '<br>List :</h3>');
+    for(i; i<followedList.length; i++){
+        mainList[i]=followedList[i];
+         $("body").append(mainList[i]+'<br>');
+    }
+    i++;
+    
+    for(var j=0; j<followsList.length; j++){
+            if(search(followsList[j],followedList)===false){
+                mainList[i]=followsList[j];
+                $("body").append(mainList[i]+'<br>');
+            }
+    }
 }
             
 function showMatrix(){
