@@ -4,7 +4,7 @@ var mainList = new Array();
             
 var matrix;
 var count = 0;
-        
+
 function initMatrix(){
     matrix = [mainList.length];
     for(var i = 0; i < mainList.length;i++){
@@ -53,14 +53,14 @@ function fillFollowed(userName, id){
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
                     //$("body").append('<h3>' + userName + '<br> Followed by :</h3>');
-                    if(data.data.length < 25){
+                    if(data.data.length < 100){
                         for(var i = 0; i < data.data.length;i++){
                             followedList.push(data.data[i].username);
                             //$("body").append(data.data[i].username+'<br>');
                         }
                     }
                     else{
-                        for(var i = 0; i < 25;i++){
+                        for(var i = 0; i < data.data.length;i++){
                             followedList.push(data.data[i].username);
                             //$("body").append(data.data[i].username+'<br>');
                         }
@@ -82,7 +82,7 @@ function fillFollowes(userName, id){
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
                     //$("body").append('<h3>' + userName + '<br>Follows :</h3>');
-                    if(data.data.length < 25){
+                    if(data.data.length < 100){
                         for(var i = 0; i < data.data.length;i++){
                         followsList.push(data.data[i].username);
                         //$("body").append(data.data[i].username+'<br>');
@@ -90,7 +90,7 @@ function fillFollowes(userName, id){
                     }
                     
                     else{
-                        for(var i = 0; i < 25;i++){
+                        for(var i = 0; i < data.data.length;i++){
                         followsList.push(data.data[i].username);
                         //$("body").append(data.data[i].username+'<br>');
                         }
@@ -240,39 +240,46 @@ function alg() {
     }
 }
 
-//Проверка
-/*var matr = [[0, 1, 0, 0],[0, 0, 0, 1],[0, 0, 0, 0],[0, 0, 1, 0]];
-
-function alg2() {
-    var k=0;
-    while(k<4){
-        for(var i=0; i<4; i++){
-            for(var j=0; j<4; j++){
-                if((matr[k][i]===1) && (matr[j][k]===1)){
-                    if((i!==k) && (j!==k)) matr[j][i]=1;        
-                }
-            }
-        }
-        k++;
-    }
-}
-
-function showMatr(){
-    var el = $();
-    el = el.add('<table>');
-    for(var i = 0; i < 4; i++){
-        el = el.add('<tr>');
-        for(var j = 0; j < 4;j++){
-            el = el.add('<td>' + matr[i][j] + '&nbsp&nbsp' + '</td>');
-        }
-        el = el.add('</tr>');
-    }
-    el = el.add('</table>');
-    $("body").append(el);
-}*/
-
 function showAlg() {
     alg();
     $("body").append("<h3> Result: <h3>");
     showMatrix();
+}
+
+
+//Создали объекты, которые будут JSON
+var graphNode = new Object();
+var graphEdge = new Object();
+
+function createJson() {
+    var nodes = [];                 //Массив вершин
+    var n;                          //Просто вершина, которую будем добавлять в этот массив
+    for(var i = 0; i < mainList.length; i++){
+        n = new Object();           //Проинициализировали пустым объектом
+        n.name = mainList[i];       //Добавили имя из списка
+        nodes[i] = n;               //И засунули в массив
+    }
+    
+    
+    var jsNode = JSON.stringify(nodes); //В переменную засунули строковое представление массива в формате JSON
+    graphNode = JSON.parse(jsNode);     //Распарсили эту переменную, чтобы получить нормальный JSON объект
+    
+    
+    var edges = []; 
+    var e;
+    var count = 0;
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length; j++){
+            if(matrix[i][j] > 0){
+                e = new Object();
+                e.src = mainList[i];
+                e.dest = mainList[j];
+                edges[count++] = e;
+            }
+        }
+    }
+    
+    var jsEdge = JSON.stringify(edges);
+    graphEdge = JSON.parse(jsEdge);
+    startGraph();   //Запускаем функцию из скрипта рисовалки графа
 }

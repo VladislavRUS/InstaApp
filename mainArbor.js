@@ -1,4 +1,4 @@
-(function($){
+function startGraph(){
 	var Renderer = function(canvas)
 	{
 		var canvas = $(canvas).get(0);
@@ -82,23 +82,21 @@
 		}
 		return that;
 	}    
-
-	$(document).ready(function(){
-		sys = arbor.ParticleSystem(1000); // создаём систему
+    
+  
+    $(document).ready(function(){
+        sys = arbor.ParticleSystem(1000); // создаём систему
 		sys.parameters({gravity:true}); // гравитация вкл
 		sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
-
-		$.getJSON("data.json",	//получаем с сервера файл с данными
-			function(data){
-				$.each(data.nodes, function(i,node){
-					sys.addNode(node.name);	//добавляем вершину
-				});
-		  
-				$.each(data.edges, function(i,edge){
-					sys.addEdge(sys.getNode(edge.src),sys.getNode(edge.dest));	//добавляем грань
-				});
-		});
+        
+        //Добавляем все вершины 
+        for(var i = 0; i < graphNode.length; i++)
+            sys.addNode(graphNode[i].name);
+        
+        //Добавляем все ребра
+        for(var i = 0; i < graphEdge.length; i++)
+            sys.addEdge(sys.getNode(graphEdge[i].src),sys.getNode(graphEdge[i].dest));
+    });
     
-	})
 
-})(this.jQuery)
+}
