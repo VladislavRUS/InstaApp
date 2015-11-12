@@ -52,17 +52,17 @@ function fillFollowed(userName, id){
         url:'https://api.instagram.com/v1/users/'+id+'/followed-by?access_token=1365770272.1fb234f.cbf09a381ea9460bbc5e4551865782ef',
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
-                    $("body").append('<h3>' + userName + '<br> Followed by :</h3>');
+                    //$("body").append('<h3>' + userName + '<br> Followed by :</h3>');
                     if(data.data.length < 25){
                         for(var i = 0; i < data.data.length;i++){
                             followedList.push(data.data[i].username);
-                            $("body").append(data.data[i].username+'<br>');
+                            //$("body").append(data.data[i].username+'<br>');
                         }
                     }
                     else{
                         for(var i = 0; i < 25;i++){
                             followedList.push(data.data[i].username);
-                            $("body").append(data.data[i].username+'<br>');
+                            //$("body").append(data.data[i].username+'<br>');
                         }
                     }
                 },
@@ -81,18 +81,18 @@ function fillFollowes(userName, id){
         url:'https://api.instagram.com/v1/users/'+id+'/follows?access_token=1365770272.1fb234f.cbf09a381ea9460bbc5e4551865782ef',
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
-                    $("body").append('<h3>' + userName + '<br>Follows :</h3>');
+                    //$("body").append('<h3>' + userName + '<br>Follows :</h3>');
                     if(data.data.length < 25){
                         for(var i = 0; i < data.data.length;i++){
                         followsList.push(data.data[i].username);
-                        $("body").append(data.data[i].username+'<br>');
+                        //$("body").append(data.data[i].username+'<br>');
                         }
                     }
                     
                     else{
                         for(var i = 0; i < 25;i++){
                         followsList.push(data.data[i].username);
-                        $("body").append(data.data[i].username+'<br>');
+                        //$("body").append(data.data[i].username+'<br>');
                         }
                     }
                     
@@ -185,7 +185,7 @@ function fillFollowedThrough(userName, id){
                     for(var i = 0; i < data.data.length; i++){
                         if(mainList.contains(data.data[i].username)){
                             matrix[mainList.indexOf(userName)][mainList.indexOf(data.data[i].username)] = 1;
-                            $("body").append("<h3> Followed + 1 <h3>");
+                            //$("body").append("<h3> Followed + 1 <h3>");
                         }
                     }
                 },
@@ -206,7 +206,7 @@ function fillFollowesThrough(userName, id){
                     for(var i = 0; i < data.data.length; i++){
                         if(mainList.contains(data.data[i].username)){
                             matrix[mainList.indexOf(userName)][mainList.indexOf(data.data[i].username)] = 1;
-                            $("body").append("<h3> Follows + 1 <h3>");
+                            //$("body").append("<h3> Follows + 1 <h3>");
                         }
                     }
                 },
@@ -214,7 +214,6 @@ function fillFollowesThrough(userName, id){
                     alert("Error follows through");
                 }
     })).done(function(){
-        
     });
 }
             
@@ -223,4 +222,5 @@ function out(){
     for(var i = 0; i < mainList.length;i++){
         goThrough(mainList[i]);
     }
+    $("body").append("<h3> Done! <h3>");
 }
