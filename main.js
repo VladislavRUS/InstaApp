@@ -6,14 +6,14 @@ var matrix;
 var count = 0;
         
 function initMatrix(){
-    matrix = [followedList.length];
-    for(var i = 0; i < followedList.length;i++){
-        var m = [followsList.length];
+    matrix = [mainList.length];
+    for(var i = 0; i < mainList.length;i++){
+        var m = [mainList.length];
         matrix[i] = m;
     }
                 
-    for(var i = 0; i < followedList.length; i++){
-        for(var j = 0; j < followsList.length;j++){
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length;j++){
             matrix[i][j] = 0;
         }
     }
@@ -132,9 +132,9 @@ function fillList(userName, id) {
 function showMatrix(){
     var el = $();
     el = el.add('<table>');
-    for(var i = 0; i < followedList.length; i++){
+    for(var i = 0; i < mainList.length; i++){
         el = el.add('<tr>');
-        for(var j = 0; j < followsList.length;j++){
+        for(var j = 0; j < mainList.length;j++){
             el = el.add('<td>' + matrix[i][j] + '&nbsp&nbsp' + '</td>');
         }
         el = el.add('</tr>');
@@ -183,8 +183,8 @@ function fillFollowedThrough(userName, id){
         dataType: 'jsonp',
         success:function (data, textStatus, jqXHR) {
                     for(var i = 0; i < data.data.length; i++){
-                        if(followsList.contains(data.data[i].username)){
-                            matrix[followedList.indexOf(userName)][followsList.indexOf(data.data[i].username)] = 1;
+                        if(mainList.contains(data.data[i].username)){
+                            matrix[mainList.indexOf(userName)][mainList.indexOf(data.data[i].username)] = 1;
                             $("body").append("<h3> Followed + 1 <h3>");
                         }
                     }
@@ -204,8 +204,8 @@ function fillFollowesThrough(userName, id){
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
                     for(var i = 0; i < data.data.length; i++){
-                        if(followsList.contains(data.data[i].username)){
-                            matrix[followedList.indexOf(userName)][followsList.indexOf(data.data[i].username)] = 1;
+                        if(mainList.contains(data.data[i].username)){
+                            matrix[mainList.indexOf(userName)][mainList.indexOf(data.data[i].username)] = 1;
                             $("body").append("<h3> Follows + 1 <h3>");
                         }
                     }
@@ -220,7 +220,7 @@ function fillFollowesThrough(userName, id){
             
 function out(){
     initMatrix();
-    for(var i = 0; i < followedList.length;i++){
-        goThrough(followedList[i]);
+    for(var i = 0; i < mainList.length;i++){
+        goThrough(mainList[i]);
     }
 }
