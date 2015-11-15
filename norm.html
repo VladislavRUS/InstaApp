@@ -2,21 +2,80 @@
 <html>
     <head>
         <title>Graph Project</title>
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet">
         <script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
     </head>
     <body>
-
+        <div id="page">
+            <div id="header">
+                <div id="logo"><img src="img/logo.png" height="50px"></div>
+            </div>
+            <div id="container">
+                <canvas id="viewport" width="1200" height="500"></canvas>
+            </div>
+            <div id="footer">
+               <div id="home" class="navigation" data-toggle="modal" data-target="#modal-1">
+                   <img src="img/home.png">
+               </div>
+               <div id="fol" class="navigation">
+                   <img src="img/fol.png">
+               </div>
+               <div id="alg" class="navigation">
+                   <img src="img/mat.png">
+               </div>
+               <div id="graph" class="navigation">
+                   <img src="img/graph.png">
+               </div>
+               <div id="result" class="navigation">
+                   <img src="img/res.png">
+               </div>
+            </div>
+        </div>
+       
+       <div class="modal" id="modal-1">
+           <div class="modal-dialog">
+               <div class="modal-content modal-md">
+                   <div class="modal-header">
+                       <p id="logo"><img src="img/logo.png" height="50px"></p>
+                   </div>
+                   <div class="modal-body">
+                       <form class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="inputUsername">Имя пользователя:</label>
+                                <input id="inputUsername" type="text" placeholder="Username">
+                            </div>
+                       </form>
+                   </div>
+                   <div class="modal-footer">
+                       <button class="btn btn-success" type="button" data-dismiss="modal" onclick="getFromText()">Войти</button>
+                   </div>
+               </div>
+           </div>
+        </div>
+        
+        <hr>
+        
         <input id="textForm" type="text"><br>
-        <button onclick="getFromText();">Press to get user information</button><br>
+        <button onclick="getFromText()">Press to get user information</button><br>
         <button onclick="out();">Press to get user`s followers information</button><br>
         <button onclick="showMatrix();">Press to get matrix</button><br>
+
         <script src = "main.js"></script>
-<<<<<<< HEAD
-        <!--<script src = "graphScript.js"></script>-->
-=======
         <script src = "graphScript.js"></script>
->>>>>>> f9ebac9e894e3ad32ba6a60a91a7d892da44b917
+
+        <button onclick="showAlg();">Press to get result</button><br>
+        <button onclick="createJson();">Press to get graph</button><br>
+        <button onclick="showGraph();">Press to show graph</button><br>
+        
+        
+        <script src = "main.js"></script>
+        <script src="bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+        <script src="arbor/arbor.js"></script>
+        <script src="mainArbor.js"></script>
+         <!--<script src = "graphScript.js"></script>-->
     </body>
 </html>          
