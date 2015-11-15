@@ -18,12 +18,12 @@ function startGraph(){
       
 			redraw:function(){
 				//действия при перересовке
-				ctx.fillStyle = "grey";	//белым цветом
+				ctx.fillStyle = "white";	//белым цветом
 				ctx.fillRect(0,0, canvas.width, canvas.height); //закрашиваем всю область
 			
 	           particleSystem.eachEdge(	//отрисуем каждую грань
 					function(edge, pt1, pt2){	//будем работать с гранями и точками её начала и конца
-						ctx.strokeStyle = "rgba(0,0,0, .933)";	//грани будут чёрным цветом с некой прозрачностью
+                        ctx.strokeStyle = edge.data;
 						ctx.lineWidth = 2;	//толщиной в один пиксель
 						ctx.beginPath();		//начинаем рисовать
 						ctx.moveTo(pt1.x, pt1.y); //от точки один
@@ -35,17 +35,12 @@ function startGraph(){
 					function(node, pt){		//получаем вершину и точку где она
                         var image = new Image();
                         image.src = mainPictures[mainList.indexOf(node.name)];
-						var w = 35;			//ширина квадрата
-						//ctx.fillStyle = "orange";	//с его цветом понятно
-						//ctx.fillRect(pt.x-w/2, pt.y-w/2, w,w);	//рисуем
+						var w = 55;			//ширина квадрата
                         ctx.drawImage(image, pt.x - 5, pt.y - 5, w, w);
-						ctx.fillStyle = "white";	//цвет для шрифта
+						ctx.fillStyle = "black";	//цвет для шрифта
 						ctx.font = 'italic 13px sans-serif'; //шрифт
 						ctx.fillText (node.name, pt.x, pt.y+1.5*w); //пишем имя у каждой точки
 				});   
-                
-                
-				
 			},
 		
 			initMouseHandling:function(){	//события с мышью
@@ -102,8 +97,11 @@ function startGraph(){
             sys.addNode(graphNode[i].name);
         
         //Добавляем все ребра
-        for(var i = 0; i < graphEdge.length; i++)
-            sys.addEdge(sys.getNode(graphEdge[i].src),sys.getNode(graphEdge[i].dest));
+        for(var i = 0; i < graphEdge.length; i++){
+            sys.addEdge(sys.getNode(graphEdge[i].src),sys.getNode(graphEdge[i].dest), graphEdge[i].color);
+        }
+        
+    
     });
     
 
