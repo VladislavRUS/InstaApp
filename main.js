@@ -1,10 +1,15 @@
 var followsList;
 var followedList;
+
+var picturesFs;
+var picturesFd;
+
+var mainPictures = new Array();
 var mainList = new Array();
             
 var matrix;
 var count = 0;
-        
+
 function initMatrix(){
     matrix = [mainList.length];
     for(var i = 0; i < mainList.length;i++){
@@ -25,10 +30,6 @@ Array.prototype.contains = function (v) {
             
 function getText(){
     return document.getElementById("textForm").value;
-}
-            
-function getUserIdByName(userName){
-    handleId(userName);
 }
             
 function handleId(userName){
@@ -52,18 +53,9 @@ function fillFollowed(userName, id){
         url:'https://api.instagram.com/v1/users/'+id+'/followed-by?access_token=1365770272.1fb234f.cbf09a381ea9460bbc5e4551865782ef',
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
-                    //$("body").append('<h3>' + userName + '<br> Followed by :</h3>');
-                    if(data.data.length < 25){
-                        for(var i = 0; i < data.data.length;i++){
-                            followedList.push(data.data[i].username);
-                            //$("body").append(data.data[i].username+'<br>');
-                        }
-                    }
-                    else{
-                        for(var i = 0; i < 25;i++){
-                            followedList.push(data.data[i].username);
-                            //$("body").append(data.data[i].username+'<br>');
-                        }
+                    for(var i = 0; i < data.data.length; i++){
+                        followedList.push(data.data[i].username);
+                        picturesFd.push(data.data[i].profile_picture);
                     }
                 },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -75,85 +67,64 @@ function fillFollowed(userName, id){
 }
             
 function fillFollowes(userName, id){
-    
-    $.when($.ajax({
+$.when($.ajax({
         type:"GET",
         url:'https://api.instagram.com/v1/users/'+id+'/follows?access_token=1365770272.1fb234f.cbf09a381ea9460bbc5e4551865782ef',
         dataType: 'jsonp',
         success: function (data, textStatus, jqXHR) {
-                    //$("body").append('<h3>' + userName + '<br>Follows :</h3>');
-                    if(data.data.length < 25){
-                        for(var i = 0; i < data.data.length;i++){
+                    for(var i = 0; i < data.data.length;i++){
                         followsList.push(data.data[i].username);
-                        //$("body").append(data.data[i].username+'<br>');
-                        }
+                        picturesFs.push(data.data[i].profile_picture);
                     }
-                    
-                    else{
-                        for(var i = 0; i < 25;i++){
-                        followsList.push(data.data[i].username);
-                        //$("body").append(data.data[i].username+'<br>');
-                        }
-                    }
-                    
                 },
         error: function (jqXHR, textStatus, errorThrown) {
                     alert("Error followes");
                 }
     })).done(function(){
-       fillList(userName, id)
+        fillList(userName, id)
     });
 }
 
-function search (a, b) {
-    for (var i=0; i<b.length; i++){
-        if(a===b[i]) return true;
-    }
-    return false;
-}
-
 function fillList(userName, id) {
-    var i=0;
     $("body").append('<h3>' + userName + '<br>List :</h3>');
-    for(i; i<followedList.length; i++){
+    for(var i = 0; i < followedList.length; i++){
         mainList[i]=followedList[i];
-         $("body").append(mainList[i]+'<br>');
+        mainPictures[i] = picturesFd[i];
+        $("body").append(mainList[i]+'<br>');
     }
-    i++;
-    
-    for(var j=0; j<followsList.length; j++){
-            if(search(followsList[j],followedList)===false){
+    for(var i = followedList.length, j = 0; j < followsList.length; j++){
+            if(!followedList.contains(followsList[j])){
                 mainList[i]=followsList[j];
+                mainPictures[i]=picturesFs[j];
                 $("body").append(mainList[i]+'<br>');
+                i++;
             }
     }
 }
-        
+
+  
 function getFromText(){
-    amountOfFollows = 0;
+    //amountOfFollows = 0;
+    
     followedList = new Array();
     followsList = new Array();
     
+    
+    picturesFd = new Array();
+    picturesFs = new Array();
+    
     userName = getText();
-    getUserIdByName(userName);
+    handleId(userName);
 }
-            
-function goThrough(userName){
-    getUserIdByNameThrough(userName);
-}
-            
-function getUserIdByNameThrough(userName){
-    handleIdThrough(userName);
-}
-            
+               
 function handleIdThrough(userName){
-                $.when($.ajax({
+$.when($.ajax({
     type:"GET",
     url:'https://api.instagram.com/v1/users/search?access_token=1365770272.1fb234f.cbf09a381ea9460bbc5e4551865782ef&q='+userName,
     dataType: 'jsonp',
     success:function (data, textStatus, jqXHR) {
                 id = data.data[0].id;
-                },
+            },
     error:  function (jqXHR, textStatus, errorThrown) {
                 alert("Error handle through");
             }
@@ -171,7 +142,6 @@ function fillFollowedThrough(userName, id){
                     for(var i = 0; i < data.data.length; i++){
                         if(mainList.contains(data.data[i].username)){
                             matrix[mainList.indexOf(userName)][mainList.indexOf(data.data[i].username)] = 1;
-                            //$("body").append("<h3> Followed + 1 <h3>");
                         }
                     }
                 },
@@ -192,7 +162,6 @@ function fillFollowesThrough(userName, id){
                     for(var i = 0; i < data.data.length; i++){
                         if(mainList.contains(data.data[i].username)){
                             matrix[mainList.indexOf(userName)][mainList.indexOf(data.data[i].username)] = 1;
-                            //$("body").append("<h3> Follows + 1 <h3>");
                         }
                     }
                 },
@@ -206,7 +175,7 @@ function fillFollowesThrough(userName, id){
 function out(){
     initMatrix();
     for(var i = 0; i < mainList.length;i++){
-        goThrough(mainList[i]);
+        handleIdThrough(mainList[i]);
     }
     $("body").append("<h3> Done! <h3>");
 }
@@ -240,39 +209,46 @@ function alg() {
     }
 }
 
-//Проверка
-/*var matr = [[0, 1, 0, 0],[0, 0, 0, 1],[0, 0, 0, 0],[0, 0, 1, 0]];
-
-function alg2() {
-    var k=0;
-    while(k<4){
-        for(var i=0; i<4; i++){
-            for(var j=0; j<4; j++){
-                if((matr[k][i]===1) && (matr[j][k]===1)){
-                    if((i!==k) && (j!==k)) matr[j][i]=1;        
-                }
-            }
-        }
-        k++;
-    }
-}
-
-function showMatr(){
-    var el = $();
-    el = el.add('<table>');
-    for(var i = 0; i < 4; i++){
-        el = el.add('<tr>');
-        for(var j = 0; j < 4;j++){
-            el = el.add('<td>' + matr[i][j] + '&nbsp&nbsp' + '</td>');
-        }
-        el = el.add('</tr>');
-    }
-    el = el.add('</table>');
-    $("body").append(el);
-}*/
-
 function showAlg() {
     alg();
     $("body").append("<h3> Result: <h3>");
     showMatrix();
+}
+
+
+//Создали объекты, которые будут JSON
+var graphNode = new Object();
+var graphEdge = new Object();
+
+function createJson() {
+    var nodes = [];                 //Массив вершин
+    var n;                          //Просто вершина, которую будем добавлять в этот массив
+    for(var i = 0; i < mainList.length; i++){
+        n = new Object();           //Проинициализировали пустым объектом
+        n.name = mainList[i];       //Добавили имя из списка
+        n.num = i;
+        nodes[i] = n;               //И засунули в массив
+    }
+    
+    var jsNode = JSON.stringify(nodes); //В переменную засунули строковое представление массива в формате JSON
+    graphNode = JSON.parse(jsNode);     //Распарсили эту переменную, чтобы получить нормальный JSON объект
+    
+    
+    var edges = []; 
+    var e;
+    var count = 0;
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length; j++){
+            if(matrix[i][j] > 0){
+                e = new Object();
+                e.src = mainList[i];
+                e.dest = mainList[j];
+                edges[count++] = e;
+            }
+        }
+    }
+    
+    var jsEdge = JSON.stringify(edges);
+    graphEdge = JSON.parse(jsEdge);
+    startGraph();   //Запускаем функцию из скрипта рисовалки графа
 }

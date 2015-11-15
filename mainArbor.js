@@ -1,8 +1,10 @@
-(function($){
+function startGraph(){
 	var Renderer = function(canvas)
 	{
 		var canvas = $(canvas).get(0);
 		var ctx = canvas.getContext("2d");
+        canvas.width = $(window).width() - 20;
+        canvas.height = $(window).height();
 		var particleSystem;
 
 		var that = {
@@ -16,28 +18,34 @@
       
 			redraw:function(){
 				//действия при перересовке
-				ctx.fillStyle = "white";	//белым цветом
+				ctx.fillStyle = "grey";	//белым цветом
 				ctx.fillRect(0,0, canvas.width, canvas.height); //закрашиваем всю область
 			
-				particleSystem.eachEdge(	//отрисуем каждую грань
+	           particleSystem.eachEdge(	//отрисуем каждую грань
 					function(edge, pt1, pt2){	//будем работать с гранями и точками её начала и конца
-						ctx.strokeStyle = "rgba(0,0,0, .333)";	//грани будут чёрным цветом с некой прозрачностью
-						ctx.lineWidth = 1;	//толщиной в один пиксель
+						ctx.strokeStyle = "rgba(0,0,0, .933)";	//грани будут чёрным цветом с некой прозрачностью
+						ctx.lineWidth = 2;	//толщиной в один пиксель
 						ctx.beginPath();		//начинаем рисовать
 						ctx.moveTo(pt1.x, pt1.y); //от точки один
 						ctx.lineTo(pt2.x, pt2.y); //до точки два
 						ctx.stroke();
 				});
-	
+                
 				particleSystem.eachNode(	//теперь каждую вершину
 					function(node, pt){		//получаем вершину и точку где она
-						var w = 10;			//ширина квадрата
-						ctx.fillStyle = "orange";	//с его цветом понятно
-						ctx.fillRect(pt.x-w/2, pt.y-w/2, w,w);	//рисуем
-						ctx.fillStyle = "black";	//цвет для шрифта
+                        var image = new Image();
+                        image.src = mainPictures[mainList.indexOf(node.name)];
+						var w = 35;			//ширина квадрата
+						//ctx.fillStyle = "orange";	//с его цветом понятно
+						//ctx.fillRect(pt.x-w/2, pt.y-w/2, w,w);	//рисуем
+                        ctx.drawImage(image, pt.x - 5, pt.y - 5, w, w);
+						ctx.fillStyle = "white";	//цвет для шрифта
 						ctx.font = 'italic 13px sans-serif'; //шрифт
-						ctx.fillText (node.name, pt.x+8, pt.y+8); //пишем имя у каждой точки
-				});    			
+						ctx.fillText (node.name, pt.x, pt.y+1.5*w); //пишем имя у каждой точки
+				});   
+                
+                
+				
 			},
 		
 			initMouseHandling:function(){	//события с мышью
@@ -82,23 +90,21 @@
 		}
 		return that;
 	}    
-
-	$(document).ready(function(){
-		sys = arbor.ParticleSystem(1000); // создаём систему
-		sys.parameters({gravity:true}); // гравитация вкл
-		sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
-
-		$.getJSON("data.json",	//получаем с сервера файл с данными
-			function(data){
-				$.each(data.nodes, function(i,node){
-					sys.addNode(node.name);	//добавляем вершину
-				});
-		  
-				$.each(data.edges, function(i,edge){
-					sys.addEdge(sys.getNode(edge.src),sys.getNode(edge.dest));	//добавляем грань
-				});
-		});
     
-	})
+  
+    $(document).ready(function(){
+        sys = arbor.ParticleSystem(10, 0.001, 0.05, true, 60, 0.02, 0.6); // создаём систему
+		//sys.parameters({gravity:false}); // гравитация вкл
+		sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
+        
+        //Добавляем все вершины 
+        for(var i = 0; i < graphNode.length; i++)
+            sys.addNode(graphNode[i].name);
+        
+        //Добавляем все ребра
+        for(var i = 0; i < graphEdge.length; i++)
+            sys.addEdge(sys.getNode(graphEdge[i].src),sys.getNode(graphEdge[i].dest));
+    });
+    
 
-})(this.jQuery)
+}
