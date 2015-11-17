@@ -1,0 +1,77 @@
+#page {
+    width: 1200px;
+    height: 1000px;
+    margin: auto;
+}
+
+#header {
+    display: block;
+    position: relative;
+    margin-top: 5px;
+    width: 1200px;
+    height: 65px;
+    background-color: #344189;
+    border-radius: 5px 5px 0 0;
+}
+
+#logo {
+    display: block;
+    position: relative;
+    margin-left: 20px;
+    margin-top: 10px;
+    float: left;
+}
+
+#container {
+    border: 1px solid #7c7c7c;
+}
+
+#footer {
+    display: block;
+    position: relative;
+    width: 1200px;
+    height: 70px;
+    background-color: #3e3e3e;
+}
+
+.navigation {
+    display: block;
+    position: relative;
+    float: left;
+    padding-top: 5px;
+    text-align: center;
+    width: 240px;
+    height: 70px;
+}
+
+.navigation:hover {
+    background-color: #000;
+}
+
+#modal-1 {
+    margin-top: 100px;
+}
+
+.modal-header {
+    height: 65px;
+    padding-top: 0;
+    background-color: #344189;
+}
+
+#logo {
+    text-align: center;  
+}
+
+.modal-body {
+    margin-top: 60px;
+    height: 150px;
+}
+
+#inputUsername {
+    margin-left: 20px;
+    width: 400px;
+}
+
+.modal-footer {
+    height: 70px;
+}
