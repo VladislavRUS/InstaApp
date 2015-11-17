@@ -3,8 +3,8 @@ function startGraph(){
 	{
 		var canvas = $(canvas).get(0);
 		var ctx = canvas.getContext("2d");
-        canvas.width = $(window).width() - 20;
-        canvas.height = $(window).height();
+        canvas.width = 800;
+        canvas.height = 600;
 		var particleSystem;
 
 		var that = {
@@ -100,9 +100,5 @@ function startGraph(){
         for(var i = 0; i < graphEdge.length; i++){
             sys.addEdge(sys.getNode(graphEdge[i].src),sys.getNode(graphEdge[i].dest), graphEdge[i].color);
         }
-        
-    
     });
-    
-
 }
