@@ -1,13 +1,21 @@
 var followsList;
 var followedList;
 
+var canvas = document.getElementById("viewport");
+
 var picturesFs;
 var picturesFd;
 
+var withRelationFD;
+var withRelationFS;
+
 var mainPictures = new Array();
 var mainList = new Array();
-            
+var relationList;
+
 var matrix;
+var transitiveMatrix;
+var tMatrixWasFormed = false;
 var count = 0;
 
 function initMatrix(){
@@ -23,22 +31,55 @@ function initMatrix(){
         }
     }
 }
-            
+ 
+
+function initTransitiveMatrix(){
+    transitiveMatrix = [mainList.length];
+    for(var i = 0; i < mainList.length;i++){
+        var m = [mainList.length];
+        transitiveMatrix[i] = m;
+    }
+                
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length;j++){
+            transitiveMatrix[i][j] = 0;
+        }
+    }
+    tMatrixWasFormed = true;
+}
+
 Array.prototype.contains = function (v) {
     return this.indexOf(v) > -1;
 }
             
-function getText(){
-    return document.getElementById("textForm").value;
+function getFromText(){
+    followedList = new Array();
+    followsList = new Array();
+    
+    picturesFd = new Array();
+    picturesFs = new Array();
+    
+    userName = getText();
+    handleId(userName);
+    
 }
-            
+
+function getText(){
+    return document.getElementById("inputUsername").value;
+}
+
 function handleId(userName){
+    var photo = document.getElementById("photo");
+    var name = document.getElementById("name");
     $.ajax({
     type:"GET",
     url:'https://api.instagram.com/v1/users/search?access_token=1365770272.1fb234f.cbf09a381ea9460bbc5e4551865782ef&q='+userName,
     dataType: 'jsonp',
     success: function (data, textStatus, jqXHR) {
         var id = data.data[0].id;
+        photo.style.display = "block";
+        photo.src = data.data[0].profile_picture;
+        name.innerHTML = userName;
         fillFollowed(userName, id);
         },
     error:  function (jqXHR, textStatus, errorThrown) {
@@ -81,7 +122,7 @@ $.when($.ajax({
                     alert("Error followes");
                 }
     })).done(function(){
-        fillList(userName, id)
+        fillList(userName, id);
     });
 }
 
@@ -102,21 +143,17 @@ function fillList(userName, id) {
     }
 }
 
-  
-function getFromText(){
-    //amountOfFollows = 0;
-    
-    followedList = new Array();
-    followsList = new Array();
-    
-    
-    picturesFd = new Array();
-    picturesFs = new Array();
-    
-    userName = getText();
-    handleId(userName);
+
+function out(){
+    initMatrix();
+    //withRelationFD = new Array();
+    //withRelationFS = new Array();
+    for(var i = 0; i < mainList.length;i++){
+        handleIdThrough(mainList[i]);
+    }
+    $("body").append("<h3> Done! <h3>");
 }
-               
+
 function handleIdThrough(userName){
 $.when($.ajax({
     type:"GET",
@@ -172,14 +209,6 @@ function fillFollowesThrough(userName, id){
     });
 }
 
-function out(){
-    initMatrix();
-    for(var i = 0; i < mainList.length;i++){
-        handleIdThrough(mainList[i]);
-    }
-    $("body").append("<h3> Done! <h3>");
-}
-
 function showMatrix(){
     var el = $();
     el = el.add('<table>');
@@ -194,14 +223,34 @@ function showMatrix(){
     $("body").append(el);
 }
 
+function showTransitiveMatrix(){
+    var el = $();
+    el = el.add('<table>');
+    for(var i = 0; i < mainList.length; i++){
+        el = el.add('<tr>');
+        for(var j = 0; j < mainList.length;j++){
+            el = el.add('<td>' + transitiveMatrix[i][j] + '&nbsp&nbsp' + '</td>');
+        }
+        el = el.add('</tr>');
+    }
+    el = el.add('</table>');
+    $("body").append(el);
+}
+
 function alg() {
+    initTransitiveMatrix();
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length; j++){
+            transitiveMatrix[i][j] = matrix[i][j];
+        }
+    }
     
     var k=0;
     while(k<mainList.length){
         for(var i=0; i<mainList.length; i++){
             for(var j=0; j<mainList.length; j++){
                 if((matrix[k][i]===1) && (matrix[j][k]===1)){
-                    if((i!==k) && (j!==k)) matrix[j][i]=1;        
+                    if((i!==k) && (j!==k)) transitiveMatrix[j][i]=1;        
                 }
             }
         }
@@ -212,7 +261,40 @@ function alg() {
 function showAlg() {
     alg();
     $("body").append("<h3> Result: <h3>");
-    showMatrix();
+    showTransitiveMatrix();
+}
+
+function compareMatrix(){
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length; j++){
+            var a = transitiveMatrix[i][j];
+            var b = matrix[i][j];
+            if(a != b){
+                transitiveMatrix[i][j] = 2;
+            }
+        }
+    }
+    $("body").append("Result of comparing: " + "<br>");
+    showTransitiveMatrix();
+}
+
+function fillRelation(){
+    relationList = [];
+    var count = 0;
+    var wasAdded = false;
+    for(var i = 0; i < mainList.length; i++){
+        for(var j = 0; j < mainList.length; j++){
+            if(!wasAdded && matrix[i][j] > 0){
+                if(!relationList.contains(mainList[i]))
+                    relationList[count++] = mainList[i];
+                if(!relationList.contains(mainList[j]))
+                    relationList[count++] = mainList[j];
+                //alert(mainList[i] + " " + mainList[j] + " " + matrix[i][j]);
+                wasAdded = true;
+            }
+        }
+        wasAdded = false;
+    }
 }
 
 
@@ -221,11 +303,12 @@ var graphNode = new Object();
 var graphEdge = new Object();
 
 function createJson() {
+    fillRelation();
     var nodes = [];                 //Массив вершин
     var n;                          //Просто вершина, которую будем добавлять в этот массив
-    for(var i = 0; i < mainList.length; i++){
+    for(var i = 0; i < relationList.length; i++){
         n = new Object();           //Проинициализировали пустым объектом
-        n.name = mainList[i];       //Добавили имя из списка
+        n.name = relationList[i];       //Добавили имя из списка
         n.num = i;
         nodes[i] = n;               //И засунули в массив
     }
@@ -233,17 +316,21 @@ function createJson() {
     var jsNode = JSON.stringify(nodes); //В переменную засунули строковое представление массива в формате JSON
     graphNode = JSON.parse(jsNode);     //Распарсили эту переменную, чтобы получить нормальный JSON объект
     
-    
     var edges = []; 
     var e;
     var count = 0;
-    for(var i = 0; i < mainList.length; i++){
-        for(var j = 0; j < mainList.length; j++){
-            if(matrix[i][j] > 0){
+    for(var i = 0; i < relationList.length; i++){
+        for(var j = 0; j < relationList.length; j++){
+            if(transitiveMatrix[mainList.indexOf(relationList[i])][mainList.indexOf(relationList[j])] > 0){
                 e = new Object();
-                e.src = mainList[i];
-                e.dest = mainList[j];
-                edges[count++] = e;
+                e.src = relationList[i];
+                e.dest = relationList[j];
+                e.color = "blue";
+                if(transitiveMatrix[mainList.indexOf(relationList[i])][mainList.indexOf(relationList[j])] > 1){
+                    e.color = "red";
+                }
+                edges[count] = e;
+                count++;
             }
         }
     }

@@ -9,29 +9,41 @@
         <script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
     </head>
     <body>
+        
         <div id="page">
             <div id="header">
                 <div id="logo"><img src="img/logo.png" height="50px"></div>
+                <div id="info">
+                   <div id="button">
+                        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-1">
+                        Войти/Сменить пользователя</button>
+                    </div>
+                    <div id="name">
+                    </div>
+                    <div id="avatar"><img id="photo"></div>
+                    
+                </div>
             </div>
             <div id="container">
-                <canvas id="viewport" width="1200" height="500"></canvas>
+               
+               <div id="follow">
+                   <div id="followed"></div>
+                   <div id="followed2"></div>
+                   <div id="followes"></div>
+                   <div id="followes2"></div>
+               </div>
+               
+               <div id="matrix"></div>
+               
+               <div id="graph">
+                    <canvas id="viewport" width="800" height="500"></canvas>  
+               </div>
+                
             </div>
             <div id="footer">
-               <div id="home" class="navigation" data-toggle="modal" data-target="#modal-1">
-                   <img src="img/home.png">
-               </div>
-               <div id="fol" class="navigation">
-                   <img src="img/fol.png">
-               </div>
-               <div id="alg" class="navigation">
-                   <img src="img/mat.png">
-               </div>
-               <div id="graph" class="navigation">
-                   <img src="img/graph.png">
-               </div>
-               <div id="result" class="navigation">
-                   <img src="img/res.png">
-               </div>
+               <div id="fol" class="navigation" onclick="follow()">Список подписчиков</div>
+               <div id="alg" class="navigation">Результат алгоритма</div>
+               <div id="res" class="navigation">Полученный граф</div>
             </div>
         </div>
        
@@ -56,19 +68,14 @@
            </div>
         </div>
         
-        <hr>
-        
         <input id="textForm" type="text"><br>
         <button onclick="getFromText()">Press to get user information</button><br>
         <button onclick="out();">Press to get user`s followers information</button><br>
         <button onclick="showMatrix();">Press to get matrix</button><br>
-
-        <script src = "main.js"></script>
-        <script src = "graphScript.js"></script>
-
         <button onclick="showAlg();">Press to get result</button><br>
+        <button onclick="compareMatrix();">Compare matrix</button><br>
         <button onclick="createJson();">Press to get graph</button><br>
-        <button onclick="showGraph();">Press to show graph</button><br>
+        
         
         
         <script src = "main.js"></script>
@@ -76,6 +83,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
         <script src="arbor/arbor.js"></script>
         <script src="mainArbor.js"></script>
+        <script src="display.js"></script>
          <!--<script src = "graphScript.js"></script>-->
     </body>
-</html>          
+</html> 
