@@ -1,17 +1,83 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>InstaApp</title>
-        <meta charset="UTF-8">
+        <title>Graph Project</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet">
+        <script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
     </head>
     <body>
-        <a href="https://instagram.com/oauth/authorize/
-                 client_id=dcb14364c08742d281bc3aeb913cb44a&redirect_uri=http://localhost:8080/InstagramApp/norm.html&response_type=token">Enter to instagram</a>
+        <div id="page">
+            <div id="header">
+                <div id="logo"><img src="img/logo.png" height="50px"></div>
+                <div id="info">
+                   <div id="button">
+                        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-1">
+                        Войти/Сменить пользователя</button>
+                    </div>
+                    <div id="name"></div>
+                    <div id="avatar"><img id="photo"></div>
+                    
+                </div>
+            </div>
+            
+            <div id="container">
+                <!--
+                <div id='spin-wrap'>
+                <div id='spin'>-->
+                <canvas id="viewport" width="1198px" height="598px"></canvas>
+            
+               <div id="follow">
+                   <div id="followed"></div>
+                   <div id="followed2"></div>
+                   <div id="followes"></div>
+                   <div id="followes2"></div>
+               </div>
+               
+               <div id="matrix">
+                   <div id="before" style="float: left;"></div>
+                   <div id="after" style="float: right;"></div>
+                </div> 
+            </div>
+            
+           <div id="footer">
+               <!--<div id="fol" class="navigation" onclick="getFromText">Список подписчиков</div>-->
+               <div id="alg" class="navigation" onclick="out();">Результат алгоритма</div>
+               <div id="res" class="navigation" onclick="createJson();">Построить граф</div>
+            </div> 
+        </div>
+        
+       <div class="modal" id="modal-1">
+           <div class="modal-dialog">
+               <div class="modal-content modal-md">
+                   <div class="modal-header">
+                       <p id="logo"><img src="img/logo.png" height="50px"></p>
+                   </div>
+                   <div class="modal-body">
+                       <form class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="inputUsername">Имя пользователя:</label>
+                                <input id="inputUsername" type="text" placeholder="Username">
+                            </div>
+                       </form>
+                   </div>
+                   <div class="modal-footer">
+                       <button class="btn btn-success" type="button" data-dismiss="modal" onclick="getFromText()">Войти</button>
+                   </div>
+               </div>
+           </div>
+        </div>
+        
+        
+        
+        <script src = "main.js"></script>
+        <script src="bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+        <script src="arbor/arbor.js"></script>
+        <script src="mainArbor.js"></script>
+        <script src="display.js"></script>
+
     </body>
-</html>
+</html> 

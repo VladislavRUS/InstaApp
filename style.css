@@ -1,6 +1,6 @@
 #page {
     width: 1200px;
-    height: 1000px;
+    height: 680px;
     margin: auto;
 }
 
@@ -9,7 +9,7 @@
     position: relative;
     margin-top: 5px;
     width: 1200px;
-    height: 65px;
+    height: 60px;
     background-color: #344189;
     border-radius: 5px 5px 0 0;
 }
@@ -18,19 +18,126 @@
     display: block;
     position: relative;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 5px;
     float: left;
 }
 
+#info {
+    display: block;
+    position: relative;
+    float: right;
+}
+
+#name {
+    display: block;
+    position: relative;
+    margin-right: 20px;
+    margin-top: 20px;
+    float: right;
+    color: #fff;
+    font-weight: 700;
+    font-size: medium;
+}
+
+#avatar {
+    display: block;
+    position: relative;
+    margin-right: 20px;
+    margin-top: 5px;
+    float: right;
+}
+
+#photo {
+    display: none;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50% 50% 50% 50%;
+}
+
+#button {
+    display: block;
+    position: relative;
+    margin-right: 20px;
+    margin-top: 12px;
+    float: right;
+}
+
 #container {
+    display: block;
+    position: relative;
+    width: 1200px;
+    height: 700px;
     border: 1px solid #7c7c7c;
+}
+
+#viewport {
+    display: block;
+    position: absolute;
+    float: left;
+}
+
+#follow {
+    display: none;
+    position: absolute;
+    width: 1200px;
+    height: 500px; 
+}
+
+#followed {
+    display: block;
+    position: relative;
+    float: left;
+    padding-left: 15px;
+    width: 300px;
+    height: 500px; 
+}
+
+#followed2 {
+    display: block;
+    position: relative;
+    float: left;
+    width: 300px;
+    height: 500px; 
+}
+
+#followes {
+    display: block;
+    position: relative;
+    float: left;
+    width: 300px;
+    height: 500px; 
+}
+
+#followes2 {
+    display: block;
+    position: relative;
+    float: left;
+    width: 300px;
+    height: 500px; 
+}
+
+#matrix {
+    display: none;
+    padding-left: 15px;
+    font-size: 5px;
+    position: relative;
+    width: 1200px;
+    height: 500px; 
+}
+
+#graph {
+    display: block;
+    position: relative;
+    width: 1200px;
+    height: 580px; 
 }
 
 #footer {
     display: block;
     position: relative;
     width: 1200px;
-    height: 70px;
+    height: 40px;
     background-color: #3e3e3e;
 }
 
@@ -38,10 +145,11 @@
     display: block;
     position: relative;
     float: left;
-    padding-top: 5px;
+    padding-top: 8px;
     text-align: center;
-    width: 240px;
-    height: 70px;
+    color: #fff;
+    width: 400px;
+    height: 40px;
 }
 
 .navigation:hover {
@@ -75,3 +183,87 @@
 .modal-footer {
     height: 70px;
 }
+
+scss.centered, #spin-wrap, #spin:after {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+}
+ 
+scss.round, #spin-wrap, #spin:after {
+ border-radius: 50%;
+}
+ 
+@keyframes spin {
+ 0% {
+ transform: rotate(90deg);
+ }
+ 
+100% {
+ transform: rotate(-270deg);
+ }
+}
+ 
+@keyframes reset {
+ 0% {
+ transform: translate(-50%, -50%) rotate(-90deg);
+ }
+ 
+100% {
+ transform: translate(-50%, -50%) rotate(270deg);
+ }
+}
+ 
+#spin-wrap {
+ width: 100px;
+ height: 100px;
+ background: #344189;
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3), 0 3px 6px rgba(0, 0, 0, 0.3), 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+}
+ 
+#spin {
+ position: relative;
+ top: 0;
+ left: 0;
+ width: 50%;
+ height: 100%;
+ border-radius: 100% 0 0 100% / 50%;
+ background: url("data:bg") no-repeat;
+ background-size: 200% 100%;
+ transform-origin: right center;
+ animation: spin 1.5s linear infinite;
+}
+#spin:before {
+ content: '';
+ display: block;
+ position:relative;
+ top: 0;
+ left: 100%;
+ width: 100%;
+ height: 100%;
+ border-radius: 0 100% 100% 0 / 50%;
+ background: url("bg") no-repeat right center;
+ background-size: 200% 100%;
+ transform-origin: left center;
+ animation: spin 1s linear infinite reverse;
+}
+#spin:after {
+ left: 100%;
+ content: '';
+ display: block;
+ width: 184%;
+ height: 92%;
+ background: #fff;
+ box-shadow: inset 0 5px 20px rgba(0, 0, 0, 0.3), inset 0 3px 6px rgba(0, 0, 0, 0.3), inset 0 4px 2px -2px rgba(0, 0, 0, 0.3);
+ animation: reset 1.5s linear infinite;
+}
+ 
+body {
+ position: absolute;
+ top: 0;
+ left: 0;
+ bottom: 0;
+ right: 0;
+ background: #fff;
+} 

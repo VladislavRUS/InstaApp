@@ -3,8 +3,8 @@ function startGraph(){
 	{
 		var canvas = $(canvas).get(0);
 		var ctx = canvas.getContext("2d");
-        canvas.width = 800;
-        canvas.height = 600;
+        canvas.width = 1198;
+        canvas.height = 598;
 		var particleSystem;
 
 		var that = {
