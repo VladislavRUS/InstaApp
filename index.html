@@ -9,7 +9,6 @@
         <script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
     </head>
     <body>
-        
         <div id="page">
             <div id="header">
                 <div id="logo"><img src="img/logo.png" height="50px"></div>
@@ -18,14 +17,14 @@
                         <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal-1">
                         Войти/Сменить пользователя</button>
                     </div>
-                    <div id="name">
-                    </div>
+                    <div id="name"></div>
                     <div id="avatar"><img id="photo"></div>
                     
                 </div>
             </div>
+            
             <div id="container">
-               
+                <canvas id="viewport"></canvas>
                <div id="follow">
                    <div id="followed"></div>
                    <div id="followed2"></div>
@@ -33,20 +32,22 @@
                    <div id="followes2"></div>
                </div>
                
-               <div id="matrix"></div>
-               
-               <div id="graph">
-                    <canvas id="viewport" width="800" height="500"></canvas>  
-               </div>
-                
+               <div id="matrix">
+                   <div id="before" style="float: left;"></div>
+                   <div id="after" style="float: right;"></div>
+                </div> 
             </div>
-            <div id="footer">
-               <div id="fol" class="navigation" onclick="follow()">Список подписчиков</div>
-               <div id="alg" class="navigation">Результат алгоритма</div>
-               <div id="res" class="navigation">Полученный граф</div>
-            </div>
+            
+           <div id="footer">
+               <div id="alg" class="navigation" onclick="out();">Результат алгоритма</div>
+               <div id="res" class="navigation" onclick="createJson();">Построить граф</div>
+            </div> 
         </div>
-       
+        
+        <div id="fountainG">
+	    
+        </div>
+        
        <div class="modal" id="modal-1">
            <div class="modal-dialog">
                <div class="modal-content modal-md">
@@ -68,14 +69,6 @@
            </div>
         </div>
         
-        <input id="textForm" type="text"><br>
-        <button onclick="getFromText()">Press to get user information</button><br>
-        <button onclick="out();">Press to get user`s followers information</button><br>
-        <button onclick="showMatrix();">Press to get matrix</button><br>
-        <button onclick="showAlg();">Press to get result</button><br>
-        <button onclick="compareMatrix();">Compare matrix</button><br>
-        <button onclick="createJson();">Press to get graph</button><br>
-        
         
         
         <script src = "main.js"></script>
@@ -84,6 +77,6 @@
         <script src="arbor/arbor.js"></script>
         <script src="mainArbor.js"></script>
         <script src="display.js"></script>
-         <!--<script src = "graphScript.js"></script>-->
+
     </body>
 </html> 

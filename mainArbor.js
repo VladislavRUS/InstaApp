@@ -3,16 +3,16 @@ function startGraph(){
 	{
 		var canvas = $(canvas).get(0);
 		var ctx = canvas.getContext("2d");
-        canvas.width = 800;
-        canvas.height = 600;
+        canvas.width = 2000;
+        canvas.height = 1000;
 		var particleSystem;
 
 		var that = {
 			init:function(system){
 				//начальная инициализация
 				particleSystem = system;
-				particleSystem.screenSize(canvas.width, canvas.height); 
-				particleSystem.screenPadding(80);
+				particleSystem.screenSize(canvas.width-300, canvas.height-200); 
+				particleSystem.screenPadding(65);
 				that.initMouseHandling();
 			},
       
@@ -35,11 +35,25 @@ function startGraph(){
 					function(node, pt){		//получаем вершину и точку где она
                         var image = new Image();
                         image.src = mainPictures[mainList.indexOf(node.name)];
-						var w = 55;			//ширина квадрата
-                        ctx.drawImage(image, pt.x - 5, pt.y - 5, w, w);
+						var w = 100;			//ширина квадрата
+                        
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.arc(pt.x + 25, pt.y + 25, 50, 0, Math.PI * 2, true);
+                        ctx.clip();
+                        ctx.closePath();
+                        
+                        ctx.drawImage(image, pt.x-25, pt.y-25, w, w);
+                        
+                        ctx.beginPath();
+                        ctx.arc(pt.x + 25, pt.y + 25, 50, 0, Math.PI * 2, true);
+                        ctx.clip();
+                        ctx.closePath();
+                        ctx.restore();
+                        
 						ctx.fillStyle = "black";	//цвет для шрифта
-						ctx.font = 'italic 13px sans-serif'; //шрифт
-						ctx.fillText (node.name, pt.x, pt.y+1.5*w); //пишем имя у каждой точки
+						ctx.font = 'italic 25px sans-serif'; //шрифт
+						ctx.fillText (node.name, pt.x, pt.y+0.9*w); //пишем имя у каждой точки
 				});   
 			},
 		
@@ -90,8 +104,8 @@ function startGraph(){
     $(document).ready(function(){
         sys = arbor.ParticleSystem(10, 0.001, 0.05, true, 60, 0.02, 0.6); // создаём систему
 		//sys.parameters({gravity:false}); // гравитация вкл
-		sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
-        
+		//sys.renderer = Renderer("#viewport") //начинаем рисовать в выбраной области
+        sys.renderer = Renderer("#viewport");
         //Добавляем все вершины 
         for(var i = 0; i < graphNode.length; i++)
             sys.addNode(graphNode[i].name);
